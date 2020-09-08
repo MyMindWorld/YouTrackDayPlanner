@@ -1,0 +1,444 @@
+/* Styles go here */
+
+.semi {
+  opacity: 0.5;
+  color: #f7fcf9;
+  /* Полупрозрачность элемента */
+}
+
+.a:link {
+    font-size: 9pt;
+    color: #ffffff;
+}
+a:link {
+color: #ffffff;
+}
+a:visited {
+color: #ffffff;
+}
+a:hover {
+color: #ff3300;
+}
+
+.c {
+  background-color: #32CD32;
+  /* Цвет фона кнопки */
+  border: 1px solid #f7fcf9;
+  /* Рамка */
+  display: inline-block;
+  padding: 15px 25px;
+  /* Поля */
+  text-decoration: none;
+  /* Убираем подчёркивание */
+  color: #f7fcf9;
+  /* Цвет текста */
+}
+
+.c:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  /* Тень */
+  background: linear-gradient(to bottom, #fcfff4, #e9e9ce);
+  /* Градиент */
+  color: #a00;
+}
+
+.d {
+  background-color: #56c9c1;
+  /* Цвет фона кнопки */
+  border: 1px solid #f7fcf9;
+  /* Рамка */
+  display: inline-block;
+  padding: 15px 25px;
+  /* Поля */
+  text-decoration: none;
+  /* Убираем подчёркивание */
+  color: #f7fcf9;
+  /* Цвет текста */
+}
+.e {
+  transition: .3s ease;
+  background-color: #0070b4;
+  /* Цвет фона кнопки */
+  border: 1px solid #f7fcf9;
+  /* Рамка */
+  display: inline-block;
+  padding: 15px 25px;
+  /* Поля */
+  text-decoration: none;
+  /* Убираем подчёркивание */
+  color: #f7fcf9;
+  /* Цвет текста */
+}
+.e:hover {
+  background-color: #56c9c1;
+  /* Цвет фона кнопки */
+  border: 1px solid #f7fcf9;
+  /* Рамка */
+  display: inline-block;
+  padding: 15px 25px;
+  /* Поля */
+  text-decoration: none;
+  /* Убираем подчёркивание */
+  color: #1E6AE1;
+  /* Цвет текста */
+}
+.e:disabled {
+  background: #dddddd;
+  color: #f7fcf9;
+}
+
+.d:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  /* Тень */
+  background: linear-gradient(to bottom, #fcfff4, #e9e9ce);
+  /* Градиент */
+  color: #a00;
+}
+* {
+  font-family: sans-serif; /* Change your font family */
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px auto;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: visible;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+
+}
+.content-table thead tr {
+  background-color: #3aa6da;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+  max-width:250px;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.content-table th{
+  cursor: pointer;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.content-table tbody tr:hover{
+  background-color:#ece1ed;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:nth-of-type(even):hover {
+  background-color: #ece1ed;
+}
+
+/*.content-table tbody tr:last-of-type {*/
+/*  border-bottom: 2px solid #009879;*/
+/*}*/
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+.content-table-logs {
+  border-collapse: collapse;
+  margin: 25px auto;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: visible;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+
+}
+.content-table-logs thead tr {
+  background-color: #56c9c1;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table-logs th,
+.content-table-logs td {
+  padding: 12px 15px;
+  max-width:250px;
+  overflow-wrap: break-word;
+  text-align: unset;
+}
+.content-table-logs th{
+  cursor: pointer;
+}
+
+.content-table-logs tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table-logs tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table-logs tbody tr:nth-of-type(even):hover {
+  background-color: #ece1ed;
+}
+
+/*.content-table tbody tr:last-of-type {*/
+/*  border-bottom: 2px solid #009879;*/
+/*}*/
+
+.content-table-logs tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+
+
+/* The alert message box */
+.alertError {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+.alertSuccess{
+  padding: 20px;
+  background-color: #4caf50; /* Red */
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+/* Nice inputs */
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 200px;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #9b9b9b;
+  outline: 0;
+  font-size: 1.3rem;
+  color: #150a32;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+.form__field::placeholder {
+  color: transparent;
+}
+.form__field:placeholder-shown ~ .form__label {
+  font-size: 1rem;
+  cursor: text;
+  top: 20px;
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #9b9b9b;
+}
+
+.form__field:focus {
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, #37D5D6, #36096D);  /* Градиент называется - Putins Training)) */
+  border-image-slice: 1;
+}
+.form__field:focus ~ .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #37D5D6;
+  font-weight: 700;
+}
+
+/* reset input */
+.form__field:required, .form__field:invalid {
+  box-shadow: none;
+}
+
+.search-box {
+  width: 50%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.search-box .search-bar {
+  display: block;
+  width: 100%;
+  padding: 15px;
+
+  color: #313131;
+  font-size: 20px;
+  appearance: none;
+  border:none;
+  outline: none;
+  background: none;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0px 16px 0px 16px;
+  transition: 0.4s;
+}
+.search-box .search-bar:focus {
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 16px 0px 16px 0px;
+}
+
+fieldset.group  {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1.25em;
+  padding: .125em;
+  display: inline-block;
+}
+
+fieldset.group legend {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 100%;
+  color: black;
+}
+
+
+ul.checkbox  {
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+  list-style: none;
+}
+
+ul.checkbox li input {
+  margin-right: .25em;
+}
+
+ul.checkbox li {
+  border: 1px transparent solid;
+  display:inline-block;
+  width:20em;
+}
+
+ul.checkbox li label {
+  margin-left: auto;
+}
+ul.checkbox li:hover,
+ul.checkbox li.focus  {
+  background-color: lightyellow;
+  border: 1px gray solid;
+  width: 20em;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1500; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  /*overflow-x: hidden;*/
+  /*overflow-x: auto;*/
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 80%;
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  overflow-y: scroll;
+  box-shadow: 0 0 10px rgba(20, 90, 161, 0.5); /* Параметры тени */
+  /*text-align: justify;*/
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.log-content {
+  display: block;
+  overflow-y: auto;
+  /*height: 100%;*/
+
+  /*font-size: .875em;*/
+  /**/
+  /*padding: 1.5em;*/
+
+  white-space: pre-wrap; /* CSS 3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  overflow-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
