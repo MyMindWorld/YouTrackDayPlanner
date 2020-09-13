@@ -11,6 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.protei.dayPlanner.model.POJO.YoutrackIssue;
 import ru.protei.dayPlanner.model.POJO.YoutrackWorkItem;
@@ -20,6 +21,8 @@ import java.util.Date;
 @Log
 @Component
 public class YoutrackRequests {
+    @Autowired
+    PlannerUtils plannerUtils;
 
     String youtrackSupportToken = "perm:Z3JvbW92X3A=.NjEtNTU=.cJ1gwI3AomMNvGWlrPVbFqywUSpMzc";
     String author = "gromov_p";
@@ -35,18 +38,29 @@ public class YoutrackRequests {
         return requestSpecification;
     }
 
-    public YoutrackIssue[] getTasksUpdatedToday() {
+    public YoutrackIssue[] getTasksUpdatedOn(Date date) {
         return RestAssured.given()
                 .spec(getYoutrackSpec())
                 .baseUri("")
                 .when()
-                .get("https://youtrack.protei.ru/api/issues?query=обновлена:Вчера проект: CRM-test,EQA,VP &fields=idReadable,summary")
+                .get("https://youtrack.protei.ru/api/issues?query=обновлена:" + plannerUtils.formatDateToYoutrackFormat(date) + " проект: CRM-test,EQA,VP &fields=idReadable,summary")
                 .then()
                 .extract()
                 .as(YoutrackIssue[].class);
     }
 
-    public Integer getMinutesFromTask(YoutrackIssue issue, String author) {
+    public YoutrackIssue getTaskInfo(String taskId) {
+        return RestAssured.given()
+                .spec(getYoutrackSpec())
+                .baseUri("")
+                .when()
+                .get("https://youtrack.protei.ru/api/issues/" + taskId + "?fields=$type,id,summary,name,idReadable")
+                .then()
+                .extract()
+                .as(YoutrackIssue.class);
+    }
+
+    public Integer getMinutesFromTask(YoutrackIssue issue, String author, Date planDate) {
         YoutrackWorkItem[] workItemsFromTask = RestAssured.given()
                 .spec(getYoutrackSpec())
                 .baseUri("https://youtrack.protei.ru/rest/issue/" + issue.getIdReadable() + "/timetracking/workitem/")
@@ -59,7 +73,7 @@ public class YoutrackRequests {
         Integer trackedMinutes = 0;
         for (YoutrackWorkItem workItem : workItemsFromTask) {
             log.info(workItem.toString());
-            if (workItem.getAuthor().getLogin().equals(author) & DateUtils.isSameDay(workItem.getCreated(), new Date())) {
+            if (workItem.getAuthor().getLogin().equals(author) & DateUtils.isSameDay(workItem.getCreated(), planDate)) {
                 trackedMinutes += workItem.getDuration();
             }
         }

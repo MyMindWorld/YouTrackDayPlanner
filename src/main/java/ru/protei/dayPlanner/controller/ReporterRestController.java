@@ -11,6 +11,7 @@ import ru.protei.dayPlanner.Utils.YoutrackRequests;
 import ru.protei.dayPlanner.model.POJO.YoutrackIssue;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static ru.protei.dayPlanner.Utils.Utils.getUsername;
 
@@ -22,13 +23,17 @@ public class ReporterRestController {
     @Autowired
     YoutrackRequests youtrackRequests;
 
-    @RequestMapping(value = "/Planner/processDayPlan", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/Planner/processDayPlan", method = RequestMethod.POST, produces = "application/json; charset=utf-8;")
     public String processDayPlan(@RequestBody String body) {
-        YoutrackIssue[] allTasksUpdatedToday = youtrackRequests.getTasksUpdatedToday();
-        ArrayList<YoutrackIssue> allTasksTrackedToday = plannerUtils.getAllTaskTrackedToday(allTasksUpdatedToday, getUsername());
-        ArrayList<YoutrackIssue> plannedTasks = plannerUtils.getTasksFromPlan(body);
 
-        String report = plannerUtils.createReport(allTasksTrackedToday, plannedTasks);
+        ArrayList<YoutrackIssue> plannedTasks = plannerUtils.getTasksFromPlan(body);
+        Date planDate = plannerUtils.getDateFromPlan(body);
+        YoutrackIssue[] allTasksUpdatedOnPlannedDay = youtrackRequests.getTasksUpdatedOn(planDate);
+        // Potential error: when task from plan is updated not on plan day - it will show on plan as unfinished
+        ArrayList<YoutrackIssue> allTasksTrackedPlannedDay = plannerUtils.getAllTaskTrackedOnDay(allTasksUpdatedOnPlannedDay, getUsername(), planDate);
+
+
+        String report = plannerUtils.createReport(allTasksTrackedPlannedDay, plannedTasks, planDate);
 
         log.info(report);
         return report;

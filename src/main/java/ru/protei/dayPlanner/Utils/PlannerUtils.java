@@ -1,5 +1,6 @@
 package ru.protei.dayPlanner.Utils;
 
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,16 +19,32 @@ public class PlannerUtils {
     @Autowired
     YoutrackRequests youtrackRequests;
 
-    final String DATE_FORMAT_NOW = "dd.MM.yy";
-    SimpleDateFormat reportDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW);
+    private SimpleDateFormat reportDateFormat = new SimpleDateFormat("dd.MM.yy");
+    private SimpleDateFormat youtrackDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    String taskIdRegex = "[0-9A-Z]+-[0-9]+";
-    String taskEstimatedRegex = "([0-9]+.*)]";
+    private String taskIdRegex = "[0-9A-Z]+-[0-9]+";
+    private String taskEstimatedRegex = "Оценка\\s*(\\d+[чм]\\s*\\d*[м]*)";
 
-    Pattern taskIdPattern = Pattern.compile(taskIdRegex);
-    Pattern taskEstimatedPattern = Pattern.compile(taskEstimatedRegex);
+    private Pattern taskIdPattern = Pattern.compile(taskIdRegex);
+    private Pattern taskEstimatedPattern = Pattern.compile(taskEstimatedRegex);
+
+    private String dateFromPlanRegex = "((\\d\\d[.]){2}\\d\\d)";
+    private Pattern dateFromPlanPattern = Pattern.compile(dateFromPlanRegex);
+
+    @SneakyThrows
+    public Date getDateFromPlan(String plan) {
+        Matcher dateFromPlanMatch = dateFromPlanPattern.matcher(plan);
+        dateFromPlanMatch.find();
+        return reportDateFormat.parse(dateFromPlanMatch.group(1));
+    }
+
+    public String formatDateToYoutrackFormat(Date dateToFormat) {
+        return youtrackDateFormat.format(dateToFormat);
+    }
 
     public ArrayList<YoutrackIssue> getTasksFromPlan(String plan) {
+        log.info(plan);
+
         ArrayList<String> tasksId = new ArrayList<>();
         ArrayList<String> tasksEstimation = new ArrayList<>();
 
@@ -35,36 +52,34 @@ public class PlannerUtils {
         Matcher estimationMatch = taskEstimatedPattern.matcher(plan);
 
         while (taskIdMatch.find()) {
-            log.info(taskIdMatch.group());
+            log.info("Task found : " + taskIdMatch.group());
             tasksId.add(taskIdMatch.group());
         }
 
         while (estimationMatch.find()) {
-            log.info(estimationMatch.group());
-            tasksEstimation.add(estimationMatch.group());
+            log.info("Estimation found : " + estimationMatch.group());
+            tasksEstimation.add(estimationMatch.group().replace("Оценка", "").trim());
         }
 
         ArrayList<YoutrackIssue> resultTasks = new ArrayList<>();
         for (String taskId : tasksId) {
-            YoutrackIssue issue = YoutrackIssue.builder()
-                    .idReadable(taskId)
-                    .estimatedFormatted(tasksEstimation.remove(0))
-                    .build();
+            YoutrackIssue issue = youtrackRequests.getTaskInfo(taskId);
+            issue.setEstimatedFormatted(tasksEstimation.remove(0));
             resultTasks.add(issue);
         }
 
+        log.info("Parsed tasks from plan:");
         for (YoutrackIssue issue : resultTasks) {
             log.info(issue.toString());
-
         }
 
         return resultTasks;
     }
 
-    public ArrayList<YoutrackIssue> getAllTaskTrackedToday(YoutrackIssue[] youtrackIssues, String author) {
+    public ArrayList<YoutrackIssue> getAllTaskTrackedOnDay(YoutrackIssue[] youtrackIssues, String author, Date planDate) {
         ArrayList<YoutrackIssue> trackedToday = new ArrayList<>();
         for (YoutrackIssue issue : youtrackIssues) {
-            Integer minutesFromTask = youtrackRequests.getMinutesFromTask(issue, author);
+            Integer minutesFromTask = youtrackRequests.getMinutesFromTask(issue, author, planDate);
             if (minutesFromTask != 0) {
                 log.info("Task " + issue.getIdReadable() + " tracked " + minutesFromTask + "m");
                 issue.setTrackedTimeFormatted(formatMinutes(minutesFromTask));
@@ -74,10 +89,14 @@ public class PlannerUtils {
         return trackedToday;
     }
 
-    public String createReport(ArrayList<YoutrackIssue> trackedTodayTasks, ArrayList<YoutrackIssue> tasksFromPlan) {
+    public String createReport(ArrayList<YoutrackIssue> trackedTodayTasks, ArrayList<YoutrackIssue> tasksFromPlan, Date planDate) {
         ArrayList<YoutrackIssue> completedTasks = new ArrayList<>();
         ArrayList<YoutrackIssue> notCompletedTasks = new ArrayList<>();
         ArrayList<YoutrackIssue> beyondPlanTasks = new ArrayList<>();
+        log.info("Tasks from plan:");
+        for (YoutrackIssue task : tasksFromPlan) {
+            log.info(task.toString());
+        }
         for (YoutrackIssue trackedTodayTask : trackedTodayTasks) {
             Optional<YoutrackIssue> completedTaskFromPlan = tasksFromPlan.stream().filter(task -> task.getIdReadable().equals(trackedTodayTask.getIdReadable())).findFirst();
             if (completedTaskFromPlan.isPresent()) {
@@ -89,7 +108,7 @@ public class PlannerUtils {
         }
         notCompletedTasks.addAll(tasksFromPlan);
 
-        log.info("Completed:");
+        log.info("Tracked today:");
         for (YoutrackIssue task : trackedTodayTasks) {
             log.info(task.toString());
         }
@@ -105,7 +124,7 @@ public class PlannerUtils {
         }
 
         String report = "Отчёт за ";
-        report += reportDateFormat.format(new Date()) + ":\n\n";
+        report += reportDateFormat.format(planDate) + ":\n\n";
         report += printFormattedTaskList(completedTasks, true, "[Выполнено]:");
         report += printFormattedTaskList(notCompletedTasks, false, "[Не выполнено]:");
         report += printFormattedTaskList(beyondPlanTasks, true, "[Сверх плана]:");

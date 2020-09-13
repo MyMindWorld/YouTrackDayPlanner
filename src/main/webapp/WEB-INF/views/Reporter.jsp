@@ -54,7 +54,7 @@
 <br/>
 <button id="processPlan" class="e"
         onclick="
-            var plan = document.getElementById('dayPlan').innerText;
+            var plan = document.getElementById('dayPlan').value;
             processPlan(plan)
                     ">
     Process plan
@@ -68,18 +68,28 @@
         $.ajax({
             url: '<c:url value="/Planner/processDayPlan"/>',
             type: "POST",
-            data: {
-                data: Plan
-            },
+            data: JSON.stringify(Plan),
+            contentType: "application/json; charset=utf-8;",
+            dataType: "",
             processData: false,
             statusCode: {
-                200: function (response) {
-                    document.getElementById('dayReport').innerHTML = response
+                200: function (jqXHR, response) {
+                    document.getElementById('dayReport').innerHTML = jqXHR.responseText
                     Spinner.hide();
                 }
             },
             error: function (jqXHR, status, errorThrown) {
-                alert('Error! Contact admin!');
+                // AAAAAAAAAAAA
+                if (status == "parsererror") {
+                    document.getElementById('dayReport').innerHTML = jqXHR.responseText;
+                    Spinner.hide();
+                } else {
+                    alert('Error! Contact admin!');
+                    console.log(jqXHR.responseText);
+                    console.log(status);
+                    console.log(errorThrown);
+                }
+
                 Spinner.hide();
             }
         })
