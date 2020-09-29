@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-        <Property name="basePath" value="${ss.logs.location:-.}/logs/DayPlanner"/>
+        <Property name="basePath" value="/logs/DayPlanner"/>
         <Property name="archivePath" value="${basePath}/archive"/>
 
     <appender name="Console"
