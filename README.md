@@ -4,6 +4,8 @@
 
 Приложение доступно по адресу [http://192.168.72.45:8520/DayPlanner/](http://192.168.72.45:8520/DayPlanner/)
 
+Для авторизации используйте свой LDAP (То-же что вы используете для авторизации на портале или в GitLab)
+
 Собирается и деплоится джобой [DayPlannerPipeline](https://jenkins.protei.ru/view/all/job/qa/job/DayPlanner/job/DayPlannerPipeline/)
 
 ### Составление плана
